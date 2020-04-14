@@ -1,0 +1,4 @@
+function acti = apopActi(param, eta_A, xdata)
+    x = param;
+    acti = (x(8)./x(1)).^x(7)./((x(8)./x(1)).^x(7) + (eta_A.*xdata + 1));
+end
