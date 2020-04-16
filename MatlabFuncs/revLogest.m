@@ -1,3 +1,3 @@
-function r = revLogest(Y, Y0, K, t)
-    r = log(Y .* (K - Y0)  ./ Y0 ./ (K - Y)) / t;
+function r = revLogest(Y, Y0, K, t, nu)
+    r = log(((K ./ Y0).^ nu - 1) ./ ((K ./ Y).^ nu - 1)) / t / nu;
 end
