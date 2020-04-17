@@ -1,3 +1,5 @@
+% Differential equastions of the dynmaic system
+% Blast and AP1903 are input as ug/ml and uM
 function dydt = DynSys(t, y, theta, B, AP)
     run('FuncGenerator.m');
     
