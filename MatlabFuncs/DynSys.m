@@ -4,6 +4,7 @@ function dydt = DynSys(t, y, theta, B, AP)
     run('FuncGenerator.m');
     
     dydt = zeros(2,1);
+    
 
     N_cap = 1;
     nu = 3.14; %Correction for generalized logistic dynmaics
