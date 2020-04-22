@@ -20,4 +20,8 @@ function dydt = DynSys(t, y, theta, B, AP)
     theta(3) = theta(3) * (AP / 20).^(1/theta(8));
     
     dydt(1) = Nu1.*N - Delta1.*auxin;
-    dydt(2) = rate_comb(theta, auxin) .* N .* (1 - (N / N_cap)^nu);
+    if rate_comb(theta, auxin) > 0
+        dydt(2) = rate_comb(theta, auxin) .* N .* (1 - (N / N_cap)^nu);
+    else
+        dydt(2) = rate_comb(theta, auxin) .* N;
+    end
