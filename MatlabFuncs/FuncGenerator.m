@@ -7,4 +7,5 @@ rate_func2 = @(x,xdata)([
 
 rate_comb = @(x, xdata)(sum(rate_func2(x, xdata), 1) - x(1));
 
-rate_func3 = @(x, xdata)(cat(1, rate_func2(x, xdata), rate_comb(x, xdata)));
+syn = @(x, phi_s, xdata)(phi_s .* (1 - transReduc(x, eta_A, xdata)) .* apopActi(x, eta_A, xdata));
+rate_syn = @(x, phi_s, xdata)(sum(rate_func2(x, xdata), 1) - x(1) - syn(x, phi_s, xdata));
