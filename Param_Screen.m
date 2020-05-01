@@ -29,7 +29,7 @@
 clear all; close all;
 addpath('./MatlabFuncs/');
 
-load('Data/Param_Fit2.mat', 'x_both'); %%mac syntax
+load('Data/Param_Fit2.mat', 'x_both', 'phi_s'); %%mac syntax
 
 run('./MatlabFuncs/FuncGenerator.m');
 % Set known values:
@@ -50,7 +50,7 @@ N_cap = 1;
 Nu1 = 100 ./ (N_cap * 24); %Ncap cells secrete 100uM auxin a day 
 Delta1 = log(2) / 24; %24 hour half life
 A_cap = Nu1.*N_cap./Delta1;
-nu = 3.14; %Correction for generalized logistic dynmaics
+nu = (3.15 + 2.69) / 2; %Correction for generalized logistic dynmaics
 
 %enumerate varied Parameters
 power_AP = logspace(0, 3, 13);
@@ -74,7 +74,7 @@ parfor i = 1:numel(AP)
     theta(5) = param(5) .* (B_ext(i) ./ B_ext0);
     theta(6) = param(6) .* (P_R(i) ./ P_R0);   
     
-    rate_exp(i) = rate_comb(theta, A); 
+    rate_exp(i) = rate_syn(theta, phi_s, A); 
     d_rate = diff(rate_exp(i), A);
     A_peak{i} = double(vpasolve(d_rate == 0,A,[0,A_cap]));
 end  
