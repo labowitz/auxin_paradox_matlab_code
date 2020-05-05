@@ -8,7 +8,8 @@ xdata = [0, .2, .5, 1, 2, 5, 10, 20, 50, 100];
 
 % dataTable = readtable('Data\MeanSTD_Fitting.xlsx');
 
-cellLine = 1; %Cell line is 1 or 2
+cellLine = 1; 
+%Cellline 1 => sc13; 2 => sc35
 
 dataFile = sprintf('Data/MeanSTD_Fitting%d.xlsx', cellLine);
 dataTable = readtable(dataFile); %%mac syntax

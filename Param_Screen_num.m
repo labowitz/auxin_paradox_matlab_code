@@ -22,7 +22,7 @@ N_cap = 1;
 Nu1 = 4.18; %Ncap cells secrete 100uM auxin a day 
 Delta1 = log(2) / 24; %24 hour half life
 A_cap = Nu1.*N_cap./Delta1;
-nu = (3.15 + 2.69) / 2; %Correction for generalized logistic dynmaics
+nu = 2.69; %Correction for generalized logistic dynmaics
 
 %enumerate varied Parameters
 APs = logspace(0, 4, 31);
@@ -91,12 +91,12 @@ for a = 1:(length(Rs)*length(Cs))
     
     hold off;
 end
-
+%%
 auxins = logspace(-3, log10(150), 1000);
 figure(2);
 hold on;
-for i = 2:numel(sortParams)
-    theta = sortParams{i}(10, :);
+for i = [2, 4, 5, 3, 6]
+    theta = sortParams{i}(287, :);
     rates = rate_syn(theta, phi_s, auxins);
     plot(auxins, rates, 'color', colors(i - 3), 'LineWidth', 3);
 end
