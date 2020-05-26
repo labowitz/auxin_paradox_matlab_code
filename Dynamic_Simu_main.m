@@ -10,18 +10,26 @@ xdata = [0, .2, .5, 1, 2, 5, 10, 20, 50, 100];
 run('./MatlabFuncs/FuncGenerator.m');
 
 auxins = logspace(-2,2,100);
-%% Time Trajectories 
-%% _Varied initial Conditions_
-
 param = x_both; 
-tspan = linspace(0, 50 * 24, 1000);
 
+%% Solve for threshold
 %Set known values
 B_ext = 50; %ug
 AP = 20; %uM
+Nu1 = 4.18; %Fitted auxin secretion rate
 
-c0 = logspace(-5, -0.25, 10);
-a0 = 10; %linspace(5,20,5);
+A01 = fzero(@(A) rate_syn(param, phi_s, A), 0);
+A02 = fzero(@(A) rate_syn(param, phi_s, A), 100);
+N01 = A01 * log(2) / 24 / Nu1;
+N02 = A02 * log(2) / 24 / Nu1;
+
+%% Time Trajectories 
+% _Varied initial Conditions_
+
+tspan = linspace(0, 50 * 24, 1000);
+
+c0 = logspace(-4, -0.25, 10);
+a0 = A01;
 [A1, N1] = meshgrid(a0,c0);
 
 figure(1);
@@ -42,13 +50,18 @@ for i = 1 : numel(A1)
     plot(tspan./24,fc(:,2),'k','Linewidth',5,'Color',[1,0,0])
 end
 
-save("Data\Dynamcs.mat", "cir_on", "cir_off", "tspan");
+plot(tspan/24, repelem(N01, length(tspan)), 'k--');
+
+hold off;
+
+save("Data\Dynamcs.mat", "cir_on", "cir_off", "tspan", 'N01');
 
 xlabel('Time (days)')
 ylabel('Cell Population')
 
 ax1 = gca;
 ax1.FontSize = 25;
+
 %% _Paradoxical Feedback Response to Mutation_
 
 mutSpike = 0.01;

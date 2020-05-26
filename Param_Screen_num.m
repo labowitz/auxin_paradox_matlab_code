@@ -85,6 +85,10 @@ for a = 1:(length(Rs)*length(Cs))
     
     patch([Bs(1), Bs(1), 200, 200], [APs(1), 1000, 1000, APs(1)], 'k', 'FaceAlpha', .2)
     
+    %to just get rid of the numbers but leave the ticks.
+    set(gca,'Yticklabel',[]) 
+    set(gca,'Xticklabel',[]) 
+    
     ax = gca;
     ax.XScale = 'log';
     ax.YScale = 'log';

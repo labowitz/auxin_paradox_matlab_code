@@ -5,12 +5,12 @@ function dydt = DynSys_syn(t, y, theta, phi_s, B, AP)
     
     dydt = zeros(2,1);
     N_cap = 1;
-    nu = (3.15 + 2.69) / 2; %Correction for generalized logistic dynmaics
+    nu = 2.69; %Correction for generalized logistic dynmaics
     
-    Nu1 = 100 ./ (N_cap * 24); %Ncap cells secrete 100uM auxin a day 
+    Nu1 = 4.18; %Fitted data
     Delta1 = log(2) / 24; %24 hour half life
 
-    auxin = y  (1);
+    auxin = y(1);
     N = y(2);
     
     % Factor in the AP1903 and blasticidin concentration into the
