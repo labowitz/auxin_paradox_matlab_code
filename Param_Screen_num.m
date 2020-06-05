@@ -24,9 +24,14 @@ Delta1 = log(2) / 24; %24 hour half life
 A_cap = Nu1.*N_cap./Delta1;
 nu = 2.69; %Correction for generalized logistic dynmaics
 
-%enumerate varied Parameters
+% Enumerate varied Parameters
 APs = logspace(0, 3, 31);
 Bs = logspace(0, log10(200), 31);
+
+% Linear space
+% APs = linspace(0, 1e3, 31);
+% Bs = linspace(0, 200, 31);
+
 [AP,B_ext] = ndgrid(APs, Bs);
 % 
 % Parameter Sweep Set up: 
@@ -90,7 +95,7 @@ figure(2);
 clf;
 hold on;
 for i = [2, 4, 5, 3, 6]
-    theta = sortParams{i}(37, :);
+    theta = sortParams{i}(37, :); %Won't work in the linear case, set to 1 instead
     rates = rate_syn(theta, phi_s, auxins);
     plot(auxins, rates, 'color', colors(i - 3), 'LineWidth', 3);
 end
