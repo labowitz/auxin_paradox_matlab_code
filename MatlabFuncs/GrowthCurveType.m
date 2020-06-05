@@ -1,5 +1,5 @@
 function grType = GrowthCurveType(rateFunc, A_cap)
-    testAs = linspace(0, A_cap, 1e5);
+    testAs = linspace(0, A_cap, 1e4);
     GRs = rateFunc(testAs);
     
     signSwitches = [];
@@ -23,7 +23,7 @@ function grType = GrowthCurveType(rateFunc, A_cap)
             case 2
                 grType = 3;
             otherwise
-                disp(signSwitches);
+%                 disp(signSwitches);
                 grType = -2;
 %                 warning("Started negative and switched %d times", length(signSwitches));
         end
@@ -35,7 +35,7 @@ function grType = GrowthCurveType(rateFunc, A_cap)
             case 1
                 grType = 0;
             otherwise
-                disp(signSwitches);
+%                 disp(signSwitches);
                 grType = -2;
 %                 warning("Started positive and switched %d times", length(signSwitches));
         end
