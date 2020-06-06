@@ -53,20 +53,22 @@ disp(x_both);
 rpredict = [rate_func2(x_both, xdata); rate_comb(x_both, xdata)];
 cpredict = endLogest(rpredict, Y0, 1, t, nu);
 
+color1 = '#1F77B4';
+color2 = '#FF7F0E';
+color3 = '#D62728';
+
+
 figure(1); %clf(fig);
 
 hold on;
 
-e1 = errorbar([1:length(xdata)],y_norm(3, :),y_error(3, :),'o','Color',[0,.7,0],'MarkerSize',7,...
-    'MarkerEdgeColor',[0,.7,0],'MarkerFaceColor',[0,.7,0]);
-e2 = errorbar([1:length(xdata)],y_norm(2, :),y_error(2, :),'o','Color',[1,.7,0],'MarkerSize',7,...
-    'MarkerEdgeColor',[1,.7,0],'MarkerFaceColor',[1,.7,0]);
-e3 = errorbar([1:length(xdata)],y_norm(4, :),y_error(4, :),'o','Color',[1,0,0],'MarkerSize',7,...
-    'MarkerEdgeColor',[1,0,0],'MarkerFaceColor',[1,0,0]);
+e1 = errorbar([1:length(xdata)],y_norm(3, :),y_error(3, :),'o','Color',color1,'MarkerSize',7,'MarkerFaceColor',color1);
+e2 = errorbar([1:length(xdata)],y_norm(2, :),y_error(2, :),'o','Color',color2,'MarkerSize',7,'MarkerFaceColor',color2);
+e3 = errorbar([1:length(xdata)],y_norm(4, :),y_error(4, :),'o','Color',color3,'MarkerSize',7,'MarkerFaceColor',color3);
 
-p1 = plot([1:length(xdata)],cpredict(1,:),'.-','Color',[0,.7,0],'MarkerFaceColor',[0,.7,0],'LineWidth',2);
-p2 = plot([1:length(xdata)],cpredict(2,:),'.-','Color',[1,.7,0],'MarkerFaceColor',[1,.7,0],'LineWidth',2);
-p3 = plot([1:length(xdata)],cpredict(3,:),'--','Color',[1, 0,0],'MarkerFaceColor',[1, 0,0],'LineWidth',2);
+p1 = plot([1:length(xdata)],cpredict(1,:),'.-','Color',color1,'LineWidth',2);
+p2 = plot([1:length(xdata)],cpredict(2,:),'.-','Color',color2,'LineWidth',2);
+p3 = plot([1:length(xdata)],cpredict(3,:),'--','Color',color3,'LineWidth',2);
 
 ylim([0, 1.1])
 xticklabels({'0','.2','.5','1','2','5','10', '20', '50', '100'});
@@ -87,7 +89,7 @@ save('./Data/Param_Fit2', "x_both", 'phi_s');
 rpredict_all = [rate_func2(x_both, xdata); rate_syn(x_both, phi_s, xdata)];
 cpredict_all = endLogest(rpredict_all, Y0, 1, t, nu);
 
-p3 = plot([1:length(xdata)],cpredict_all(3,:),':','Color',[1, 0,0],'MarkerFaceColor',[1, 0,0],'LineWidth',2);
+p3 = plot([1:length(xdata)],cpredict_all(3,:),':','Color',color3,'LineWidth',2);
 % 
 % ylim([0, 1.1])
 % xticklabels({'0','.2','.5','1','2','5','10', '20', '50', '100'});
