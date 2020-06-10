@@ -25,8 +25,8 @@ A_cap = Nu1.*N_cap./Delta1;
 nu = 2.69; %Correction for generalized logistic dynmaics
 
 % Enumerate varied Parameters
-APs = logspace(0, 3, 31);
-Bs = logspace(0, log10(200), 31);
+APs = logspace(0, 3, 201);
+Bs = logspace(0, log10(200), 201);
 
 % Linear space
 % APs = linspace(0, 1e3, 31);
@@ -36,7 +36,7 @@ Bs = logspace(0, log10(200), 31);
 % 
 % Parameter Sweep Set up: 
 
-%% screen of the AP x Blast map
+% screen of the AP x Blast map
 grCodes = [-2, -1, 0, 1, 2, 3];
 sortParams = {[], [], [], [], [], []};
 
@@ -61,13 +61,16 @@ grTypes = reshape(grTypes, [length(APs), length(Bs)]);
 
 close all;
 
-MarkerSize = 8.5;
+MarkerSize = 5;
 figure(1);  
 
 colors = containers.Map([-2, -1, 0, 1, 2, 3], ... 
-                        {[.1, .1, .1], [.2, 0, 1], ...
-                         [.2, 1, .2], [.9, 0, 0], ...
-                         [.9, .7, .1], [.9, .1, 1]});
+                        {[192, 192, 192] / 255, ...
+                         [183, 238, 217] / 255, ...
+                         [254, 226, 187] / 255, ... 
+                         [210, 195, 224] / 255, ... 
+                         [245, 203, 213] / 255, ...
+                         [107, 170, 221] / 255});
 
 
 [AP_sub_mesh, B_sub_mesh] = ndgrid(APs, Bs);
