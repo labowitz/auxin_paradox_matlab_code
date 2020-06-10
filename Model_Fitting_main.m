@@ -8,7 +8,7 @@ xdata = [0, .2, .5, 1, 2, 5, 10, 20, 50, 100];
 
 % dataTable = readtable('Data\MeanSTD_Fitting.xlsx');
 
-cellLine = 1; 
+cellLine = 2; 
 %Cellline 1 => sc13; 2 => sc35
 
 dataFile = sprintf('Data/MeanSTD_Fitting%d.xlsx', cellLine);
@@ -53,9 +53,9 @@ disp(x_both);
 rpredict = [rate_func2(x_both, xdata); rate_comb(x_both, xdata)];
 cpredict = endLogest(rpredict, Y0, 1, t, nu);
 
-color1 = '#1F77B4';
-color2 = '#FF7F0E';
-color3 = '#D62728';
+color1 = '#2CA02C';
+color2 = '#D62728';
+color3 = '#0D79f2';
 
 
 figure(1); %clf(fig);
