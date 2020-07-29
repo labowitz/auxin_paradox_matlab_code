@@ -25,8 +25,12 @@ A_cap = Nu1.*N_cap./Delta1;
 nu = 2.69; %Correction for generalized logistic dynmaics
 
 % Enumerate varied Parameters
-APs = logspace(0, 3, 201);
-Bs = logspace(0, log10(200), 201);
+% APs = logspace(0, 3, 201);
+% Bs = logspace(0, log10(200), 201);
+
+% Enumerate varied Parameters (Sub-sampling)
+APs = logspace(0, 3, 21);
+Bs = logspace(0, log10(200), 21);
 
 % Linear space
 % APs = linspace(0, 1e3, 31);
@@ -90,6 +94,27 @@ ax = gca;
 ax.XScale = 'log';
 ax.YScale = 'log';
 
+hold off;
+
+%% Plot the "unclassified" group
+auxins = logspace(-2, log10(150), 1000);
+figure(2);
+clf;
+hold on;
+for i = 1 : size(sortParams{1}, 1)
+    theta = sortParams{1}(i, :); %Won't work in the linear case, set to 1 instead
+    rates = rate_syn(theta, phi_s, auxins);
+    plot(auxins, rates, 'color', [0.5, 0.5, 0.5], 'LineWidth', 3);
+end
+
+
+plot(auxins, rate_syn(sortParams{6}(2, :), phi_s, auxins), 'color', colors(3), 'LineWidth', 3);
+plot(auxins, rate_syn(sortParams{5}(75, :), phi_s, auxins), 'color', colors(2), 'LineWidth', 3);
+
+
+plot(auxins, auxins * 0, '--k', 'LineWidth', 3);
+ax = gca;
+ax.XScale = 'log';
 hold off;
 
 %% Plot the examples
