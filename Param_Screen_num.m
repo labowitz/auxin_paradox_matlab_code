@@ -29,8 +29,8 @@ nu = 2.69; %Correction for generalized logistic dynmaics
 % Bs = logspace(0, log10(200), 201);
 
 % Enumerate varied Parameters (Sub-sampling)
-APs = logspace(0, 3, 21);
-Bs = logspace(0, log10(200), 21);
+APs = logspace(0, 3, 501);
+Bs = logspace(0, log10(200), 501);
 
 % Linear space
 % APs = linspace(0, 1e3, 31);
@@ -45,7 +45,7 @@ grCodes = [-2, -1, 0, 1, 2, 3];
 sortParams = {[], [], [], [], [], []};
 
 tic
-for i = 1:numel(AP)
+parfor i = 1:numel(AP)
     % Factor in the AP1903 and Blasticidin concentration, and protein expressions into the parameters
     theta = param;
     theta(3) = param(3) .* (AP(i) ./ AP0).^(1/param(8));
@@ -53,7 +53,15 @@ for i = 1:numel(AP)
         
     rateParamedFunc = @(A) rate_syn(theta, phi_s, A);
     grTypes(i) = GrowthCurveType(rateParamedFunc, A_cap);
+end  
+
+for i = 1:numel(AP)
+    % Factor in the AP1903 and Blasticidin concentration, and protein expressions into the parameters
+    theta = param;
+    theta(3) = param(3) .* (AP(i) ./ AP0).^(1/param(8));
+    theta(5) = param(5) .* (B_ext(i) ./ B_ext0);
     
+    % Store different parameters by their type
     sortParams{grTypes(i) + 3} = [sortParams{grTypes(i) + 3}; theta];
 end  
 
@@ -76,6 +84,13 @@ colors = containers.Map([-2, -1, 0, 1, 2, 3], ...
                          [245, 203, 213] / 255, ...
                          [187, 240, 254] / 255});
 
+colorMap = [[192, 192, 192] / 255; ...
+            [183, 238, 217] / 255; ...
+            [254, 226, 187] / 255; ... 
+            [210, 195, 224] / 255; ... 
+            [245, 203, 213] / 255; ...
+            [187, 240, 254] / 255];
+
 
 [AP_sub_mesh, B_sub_mesh] = ndgrid(APs, Bs);
 
@@ -83,12 +98,14 @@ colors = containers.Map([-2, -1, 0, 1, 2, 3], ...
 hold on;
 
 % curTypes = grTypes(:, :, a);
-for grCode = grCodes
-    thisCode = find(grTypes == grCode);
-    drawY = AP_sub_mesh(thisCode);
-    drawX = B_sub_mesh(thisCode);
-    plot(drawX,drawY,'s','MarkerSize',MarkerSize,'MarkerFaceColor',colors(grCode),'MarkerEdgeColor',colors(grCode))
-end
+% for grCode = grCodes
+%     thisCode = find(grTypes == grCode);
+%     drawY = AP_sub_mesh(thisCode);
+%     drawX = B_sub_mesh(thisCode);
+%     plot(drawX,drawY,'s','MarkerSize',MarkerSize,'MarkerFaceColor',colors(grCode),'MarkerEdgeColor',colors(grCode))
+% end
+contourf( B_sub_mesh, AP_sub_mesh, grTypes, grCodes)
+colormap(colorMap)
 
 ax = gca;
 ax.XScale = 'log';
@@ -137,10 +154,14 @@ hold off;
 RC_total = logspace(log10(P_R0 + P_C0)-1, log10(P_R0 + P_C0)+1, 15);
 RC_ratio = logspace(-1, 1, 15);
 
+% replace AP and B with a downsampled ones
+APs = logspace(0, 3, 21);
+Bs = logspace(0, log10(200), 21);
+
 [AP,B_ext,tots,rats] = ndgrid(APs, Bs, RC_total, RC_ratio);
 
 tic
-for i = 1:numel(AP)
+parfor i = 1:numel(AP)
     % Factor in the AP1903 and Blasticidin concentration, and protein expressions into the parameters
     P_R_i = tots(i) * rats(i) / (rats(i) + 1);
     P_C_i = tots(i) / (rats(i) + 1);
@@ -151,7 +172,6 @@ for i = 1:numel(AP)
     
     rateParamedFunc = @(A) rate_syn(theta, phi_s, A);
     grTypes2(i) = GrowthCurveType(rateParamedFunc, A_cap);
-    
 end  
 
 % Measure and display the time used
