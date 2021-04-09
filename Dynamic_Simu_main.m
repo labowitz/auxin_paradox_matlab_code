@@ -26,7 +26,7 @@ N02 = A02 * log(2) / 24 / Nu1;
 %% Time Trajectories 
 % _Varied initial Conditions_
 
-tspan = linspace(0, 50 * 24, 1000);
+tspan = linspace(0, 80 * 24, 1000);
 
 c0 = logspace(-4, -0.25, 10);
 a0 = A01;
@@ -40,8 +40,8 @@ cir_off = [];
 for i = 1 : numel(A1)
     y0 = [A1(i), N1(i)];
     [t,f] = ode45(@(t,y) DynSys_syn(t,y,param,phi_s,B_ext,AP),tspan,y0');
-    [tc,fc] = ode45(@(t,y) DynSys_syn(t,y,param,phi_s,0,0),tspan,y0');
     
+    [tc,fc] = ode45(@(t,y) DynSys_syn(t,y,param,phi_s,0,0),tspan,y0');
     cir_on = [cir_on, f(:,2)];
     cir_off = [cir_off, fc(:,2)];
     
@@ -61,6 +61,39 @@ ylabel('Cell Population')
 
 ax1 = gca;
 ax1.FontSize = 25;
+%% Delay Differential Equation
+  
+figure(4)
+tau = [.25,8,24,48,72];
+clist = colormap(cool(length(tau)));
+for i = 1 : numel(tau)
+    sol = dde23(@(t,y,Z) DynSys_syn_delay2(t,y,Z,param,phi_s,B_ext,AP), tau(i), @history, tspan);
+    t_delay = sol.x';
+    f_delay = sol.y';
+    hold on
+    plot(t_delay./24,f_delay(:,2),'k','Linewidth',3,'Color',clist(i,:))                         
+
+end
+c = colorbar('eastoutside','Ticks',[.1,.3,.5,.7,.9],...
+         'TickLabels',{'.25','8 ','24','48','72'},'FontSize',18);
+c.Label.String = '\tau (hr)';
+
+y00 = [0.3300 .1];
+[t0,f0] = ode45(@(t,y) DynSys_syn(t,y,param,phi_s,B_ext,AP),tspan,y00');
+plot(tspan./24,f0(:,2),'k--','Linewidth',2,'Color',[50,50,201]./255)
+
+
+ylim([0,1]);
+xlim([0,t_delay(end)./24])
+xlabel('Time (days)')
+ylabel('Cell Population')
+
+ax4 = gca;
+ax4.FontSize = 25;
+% ax4.YScale = 'log';
+
+
+
 
 %% _Paradoxical Feedback Response to Mutation_
 
@@ -125,3 +158,10 @@ xlim([0, 60])
 ax3 = gca;
 ax3.FontSize = 25;
 box off;
+%% History Function for delay differential equation
+
+function s = history(t) % history function for t <= 0
+  s = ones(2,1);
+  s(1) = 0.3300;
+  s(2) = .1;
+end
